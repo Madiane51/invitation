@@ -174,39 +174,43 @@
         .d-5 { transition-delay: 0.5s; }
 
         /* --- SLIDE 1 : INVITATION PLEIN ÉCRAN ARC --- */
+        /* --- SLIDE 1 : INVITATION PLEIN ÉCRAN ARC --- */
         #s1 {
             padding: 0;
             background-color: #000; /* Fond noir derrière l'arc */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            align-items: center; /* NOUVEAU : Centre la carte sur PC */
         }
         .arch-invitation {
             width: 100%;
-            max-width: 100%;
-            height: calc(100dvh - 70px); /* Laisse de l'espace en bas */
-            background-color: #000;
-            border-radius: 0 0 0 0; /* Reset */
-            /* Forme d'arche large */
-            border-radius: 50% 50% 0 0 / 10% 10% 0 0;
+            max-width: 600px; /* NOUVEAU : Limite la largeur sur PC pour garder un format "carte" */
+            height: calc(100dvh - 70px); 
+            background-color: #ffffff; 
+            
+            /* LA MAGIE EST ICI : Prends 50vw sur mobile, mais bloque à 300px max sur PC (la moitié de max-width) */
+            border-radius: min(50vw, 300px) min(50vw, 300px) 0 0; 
+            
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Aligne l'image en bas */
+            justify-content: flex-end; 
             overflow: hidden;
             position: relative;
             box-shadow: none;
             border: none;
-            margin-top: auto; /* Pousse vers le bas si besoin, ou remplit */
+            margin-top: auto; 
         }
         .arch-invitation img {
             width: 100%;
-            height: auto;
+            height: 100%; 
             max-height: 100%;
-            object-fit: cover;
+            object-fit: contain; 
             object-position: bottom;
             transform: translateY(20px);
             opacity: 0;
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease;
+            padding-top: 30px; 
         }
         .arch-invitation img.visible {
             transform: translateY(0);
@@ -234,7 +238,7 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
-
+        
         /* --- SLIDE 2 : COMPTE A REBOURS --- */
         #s2 {
             background-color: var(--cream);
@@ -665,7 +669,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="tel" id="tel" class="form-control" placeholder=" " required>
+                        <input type="tel" id="tel" class="form-control" placeholder=" " required maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)">
                         <label for="tel" class="form-label">Numéro de téléphone *</label>
                     </div>
 
@@ -898,5 +902,4 @@
         }
     </script>
 </body>
-
 </html>
