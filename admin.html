@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration RSVP</title>
+    
+    <!-- Polices identiques à index.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bordeaux: #7a1f23;
+            --bordeaux-light: #9a2b30;
+            --bg-body: #f4f4f4;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-display: 'Cinzel', serif;
+            --font-text: 'Cormorant Garamond', serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            font-family: var(--font-serif);
+            padding: 20px; 
+            line-height: 1.6;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        h1 { 
+            color: var(--bordeaux); 
+            margin-bottom: 30px; 
+            text-align: center; 
+            font-family: var(--font-display);
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+        
+        /* Formulaire de connexion */
+        #login-section { 
+            display: flex; flex-direction: column; max-width: 350px; margin: 10vh auto; gap: 20px; 
+            background: var(--bg-card); padding: 40px; border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        input { 
+            padding: 14px; border: 1px solid #ddd; 
+            background: #fff; color: var(--text-main); 
+            border-radius: 4px; font-size: 1rem; font-family: var(--font-serif);
+        }
+        button { 
+            padding: 14px 20px; border: none; border-radius: 4px; 
+            background: var(--bordeaux); color: white; cursor: pointer; 
+            font-size: 0.9rem; font-family: var(--font-display); letter-spacing: 1px; text-transform: uppercase;
+            transition: background 0.3s; 
+            min-height: 48px; /* Mobile friendly */
+        }
+        button:hover { background: var(--bordeaux-light); }
+        
+        /* Dashboard */
+        #dashboard-section { display: none; }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--bordeaux);
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .header-actions { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .btn-outline { background: transparent; color: var(--bordeaux); border: 1px solid var(--bordeaux); }
+        .btn-outline:hover { background: rgba(122, 31, 35, 0.05); }
+        .btn-danger { background: #dc3545; font-size: 0.75rem; padding: 10px 12px; margin-top: 10px; width: 100%; }
+        
+        /* Grille de cartes (remplace le tableau) */
+        .responses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .response-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .response-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;
+        }
+        .card-name { font-family: var(--font-display); font-size: 1.1rem; color: var(--bordeaux); font-weight: 600; }
+        .card-date { font-size: 0.75rem; color: var(--text-muted); }
+        
+        .card-body { font-size: 0.9rem; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .info-label { color: var(--text-muted); }
+        .info-value { font-weight: 600; color: var(--text-main); }
+        
+        .message-box {
+            margin-top: 15px; padding: 10px; background: #f9f9f9; 
+            border-radius: 6px; font-style: italic; font-size: 0.85rem; color: #555;
+            border-left: 3px solid var(--bordeaux);
+        }
+
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 1px; }
+        .badge.oui { background: rgba(40, 167, 69, 0.2); color: #4cd168; border: 1px solid #28a745; }
+        .badge.non { background: rgba(220, 53, 69, 0.2); color: #e4606d; border: 1px solid #dc3545; }
+
+        /* Mobile Optimizations */
+        @media (max-width: 600px) {
+            .header-actions { flex-direction: column; align-items: stretch; }
+            .header-actions > div { display: flex; flex-direction: column; gap: 10px; }
+            button { width: 100%; }
+            .stat-card { padding: 15px; }
+            .stat-number { font-size: 2rem; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Administration Mariage</h1>
+
+    <div id="login-section">
+        <input type="email" id="email" placeholder="Email admin" required>
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <button onclick="login()">Se connecter</button>
+        <div id="login-error" style="color: red; font-size: 0.8rem; text-align: center;"></div>
+    </div>
+
+    <div id="dashboard-section">
+        <!-- Statistiques -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="stat-total">0</div>
+                <div class="stat-label">Réponses Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-mairie">0</div>
+                <div class="stat-label">Invités Mairie</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-fete">0</div>
+                <div class="stat-label">Invités Soirée</div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <div>
+                <button onclick="fetchData()">Rafraîchir</button>
+                <button class="btn-outline" onclick="exportCSV()">Exporter CSV</button>
+            </div>
+            <button class="btn-outline" onclick="logout()">Déconnexion</button>
+        </div>
+
+        <!-- Grille de cartes -->
+        <div id="responses-grid" class="responses-grid">
+            <!-- Les cartes seront injectées ici -->
+        </div>
+    </div>
+</div>
+
+<script>
+// Initialisation
+    const supabaseUrl = 'https://vhtcwjufswaouhnbjypq.supabase.co';
+    const supabaseKey = 'sb_publishable_zedyoWSG1zLry3vxpg-45g_BOVvU8PA';
+    
+    // ON CHANGE LE NOM ICI POUR "db" (pour éviter le conflit)
+    const db = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    let rsvpData = [];
+
+    // Gestion de l'état d'authentification
+    db.auth.onAuthStateChange((event, session) => {
+        if (session) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'block';
+            fetchData();
+        } else {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('dashboard-section').style.display = 'none';
+        }
+    });
+
+    // Connexion
+    async function login() {
+        // On réinitialise l'erreur visuelle
+        document.getElementById('login-error').innerText = "";
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        const { error } = await db.auth.signInWithPassword({ email, password });
+        
+        if (error) {
+            document.getElementById('login-error').innerText = "Identifiants incorrects.";
+            console.error("Erreur de connexion :", error.message);
+        }
+    }
+
+    // Déconnexion
+    async function logout() {
+        await db.auth.signOut();
+    }
+
+    // Récupérer les données
+    async function fetchData() {
+        const { data, error } = await db
+            .from('rsvp_responses')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            alert("Erreur lors de la récupération des données.");
+            console.error(error);
+            return;
+        }
+        
+        rsvpData = data;
+        updateStats(data);
+        renderCards(data);
+    }
+
+    // Calculer et afficher les stats
+    function updateStats(data) {
+        const total = data.length;
+        let countMairie = 0;
+        let countFete = 0;
+
+        data.forEach(row => {
+            if (row.presence_mairie) countMairie += (row.nb_mairie || 0);
+            if (row.presence_fete) countFete += (row.nb_fete || 0);
+        });
+
+        document.getElementById('stat-total').innerText = total;
+        document.getElementById('stat-mairie').innerText = countMairie;
+        document.getElementById('stat-fete').innerText = countFete;
+    }
+
+    // Afficher les cartes (Responsive)
+    function renderCards(data) {
+        const grid = document.getElementById('responses-grid');
+        grid.innerHTML = '';
+
+        data.forEach(row => {
+            const date = new Date(row.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute:'2-digit' });
+            
+            const badgeMairie = row.presence_mairie ? `<span class="badge oui">OUI (${row.nb_mairie})</span>` : `<span class="badge non">NON</span>`;
+            const badgeFete = row.presence_fete ? `<span class="badge oui">OUI (${row.nb_fete})</span>` : `<span class="badge non">NON</span>`;
+            const messageHtml = row.message ? `<div class="message-box">"${row.message}"</div>` : '';
+
+            const card = document.createElement('div');
+            card.className = 'response-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="card-name">${row.nom}</div>
+                    <div class="card-date">${date}</div>
+                </div>
+                <div class="card-body">
+                    <div class="info-row"><span class="info-label">Tél:</span> <span class="info-value"><a href="tel:${row.telephone}" style="color:inherit;text-decoration:none;">${row.telephone}</a></span></div>
+                    <div class="info-row"><span class="info-label">Mairie:</span> <div>${badgeMairie}</div></div>
+                    <div class="info-row"><span class="info-label">Soirée:</span> <div>${badgeFete}</div></div>
+                    ${messageHtml}
+                    <button class="btn-danger" onclick="deleteRow('${row.id}')">Supprimer la réponse</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Supprimer une ligne
+    async function deleteRow(id) {
+        if (!confirm("Voulez-vous vraiment supprimer cette réponse ?")) return;
+
+        const { error } = await db.from('rsvp_responses').delete().eq('id', id);
+        if (error) {
+            alert("Erreur lors de la suppression.");
+            console.error(error);
+        } else {
+            fetchData(); // Rafraîchir
+        }
+    }
+
+    // Exporter en CSV
+    function exportCSV() {
+        if (rsvpData.length === 0) return alert("Aucune donnée à exporter.");
+
+        const headers = ["Date", "Nom", "Telephone", "Presence Mairie", "Nb Mairie", "Presence Fete", "Nb Fete", "Message"];
+        const rows = rsvpData.map(r => [
+            new Date(r.created_at).toLocaleString('fr-FR'),
+            `"${r.nom.replace(/"/g, '""')}"`,
+            `"${r.telephone}"`,
+            r.presence_mairie ? 'Oui' : 'Non',
+            r.nb_mairie,
+            r.presence_fete ? 'Oui' : 'Non',
+            r.nb_fete,
+            `"${(r.message || '').replace(/"/g, '""')}"`
+        ]);
+
+        const csvContent = [headers.join(','), ...rows.map(e => e.join(','))].join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute("href", url);
+        link.setAttribute("download", "invites_mariage.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>
