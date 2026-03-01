@@ -238,6 +238,24 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
+
+        .swipe-hint-bottom {
+            position: absolute;
+            bottom: 25px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--bordeaux);
+            font-family: var(--font-display);
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.6;
+            z-index: 5;
+        }
+        .swipe-hint-bottom svg { width: 14px; height: 14px; margin-bottom: 5px; stroke: currentColor; }
         
         /* --- SLIDE 2 : COMPTE A REBOURS --- */
         #s2 {
@@ -585,11 +603,19 @@
         </section>
 
         <section class="slide" id="s2">
-            <div class="reveal d-1">
-                <h2 class="cd-title">Le Grand Jour</h2>
+            <div class="reveal d-1" style="text-align: center;">
+                <h2 style="font-family: var(--font-display); font-size: 1.2rem; letter-spacing: 0.2em; color: var(--bordeaux); margin-bottom: 5px; text-transform: uppercase;">Compte à Rebours</h2>
+                <p style="font-family: var(--font-script); font-size: 3rem; color: var(--dark); margin-bottom: 40px;">Avant le grand jour</p>
             </div>
             <div class="countdown-digits reveal d-2" id="countdown">
                 </div>
+            
+            <div class="swipe-hint-bottom reveal d-3">
+                <div class="swipe-anim">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                    <span>Glisser</span>
+                </div>
+            </div>
         </section>
 
         <section class="slide slide-venue" id="s3">
@@ -621,13 +647,20 @@
                     Calendrier
                 </a>
             </div>
+
+            <div class="swipe-hint-bottom reveal d-5">
+                <div class="swipe-anim">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                    <span>Glisser</span>
+                </div>
+            </div>
         </section>
 
         <section class="slide slide-venue" id="s4">
             <div class="venue-deco-line reveal d-1"></div>
 
             <div class="venue-time reveal d-2">19h</div>
-            <div class="venue-type reveal d-2">Soirée de Réception</div>
+            <div class="venue-type reveal d-2">Soirée</div>
 
             <h2 class="venue-title reveal d-3">Salle de Réception</h2>
             <div class="venue-divider reveal d-3"></div>
@@ -650,6 +683,13 @@
                     <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                     Calendrier
                 </a>
+            </div>
+
+            <div class="swipe-hint-bottom reveal d-5">
+                <div class="swipe-anim">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                    <span>Glisser</span>
+                </div>
             </div>
         </section>
 
